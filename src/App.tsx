@@ -1,41 +1,36 @@
-import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import Ticker from './components/Ticker';
 import About from './components/About';
 import Experience from './components/Experience';
-import Projects from './components/Projects';
+import Work from './components/Work';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
+import Footer from './components/Footer';
 
 function App() {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
-
   return (
-    <div className="min-h-screen bg-primary text-textPrimary">
+    <MotionConfig reducedMotion="user">
+      <a
+        href="#about"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-paper"
+      >
+        Skip to content
+      </a>
       <Navbar />
-      <main className="relative">
-        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
+      <main>
         <Hero />
+        <Ticker />
         <About />
         <Experience />
-        <Projects />
+        <Work />
         <Skills />
         <Contact />
       </main>
-      <footer className="bg-primary py-8 text-center text-textSecondary border-t border-tertiary">
-        <div className="container mx-auto px-4">
-          <p>© {new Date().getFullYear()} Zeeshan Liaqat. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+      <Footer />
+    </MotionConfig>
   );
 }
 
-export default App; 
+export default App;

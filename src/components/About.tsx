@@ -1,66 +1,60 @@
-import { motion } from 'framer-motion';
+import { education, experience, focusAreas, profile } from '../data/profile';
+import Reveal from './Reveal';
+import RichText from './RichText';
+import SectionHeader from './SectionHeader';
 
-const About = () => {
-  return (
-    <section id="about" className="py-20 bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl font-bold text-textPrimary mb-8">
-            About <span className="text-secondary">Me</span>
-          </h2>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="text-textSecondary">
-              <p className="mb-4">
-                I am a passionate Software Engineer with a strong foundation in computer science and
-                a drive for creating efficient, scalable solutions. Currently working at the Pakistan
-                Air Force, I specialize in developing mission-critical desktop applications using
-                .NET WPF and modern software development practices.
-              </p>
-              <p className="mb-4">
-                My journey in software development has equipped me with expertise in both frontend
-                and backend technologies, allowing me to build comprehensive solutions that meet
-                complex requirements while maintaining high standards of code quality and performance.
-              </p>
+const About = () => (
+  <section id="about" className="py-24 md:py-32">
+    <div className="page">
+      <SectionHeader index="01" title="About" kicker="Profile" />
+
+      <div className="grid grid-cols-1 gap-14 md:grid-cols-12 md:gap-10">
+        <Reveal className="space-y-6 md:col-span-7">
+          <p className="text-2xl leading-snug text-ink sm:text-3xl">
+            <RichText text={profile.summary[0]} />
+          </p>
+          {profile.summary.slice(1).map((paragraph) => (
+            <p key={paragraph} className="max-w-2xl text-lg leading-relaxed text-muted">
+              <RichText text={paragraph} />
+            </p>
+          ))}
+        </Reveal>
+
+        <Reveal delay={0.1} className="md:col-span-4 md:col-start-9">
+          <dl className="divide-y divide-line border-y border-line">
+            <div className="py-5">
+              <dt className="eyebrow">Currently</dt>
+              <dd className="mt-2 font-medium">
+                {experience.role} at {experience.company}
+              </dd>
+              <dd className="text-sm text-muted">{experience.location}</dd>
             </div>
-            
-            <div className="space-y-6">
-              <div className="bg-tertiary p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-textPrimary mb-4">Education</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="text-secondary font-medium">Bachelor of Science in Computer Science</h4>
-                    <p className="text-textSecondary">Comsats University Attock Campus</p>
-                    <p className="text-textSecondary text-sm">Sep. 2019 - June 2023</p>
-                  </div>
-                  <div>
-                    <h4 className="text-secondary font-medium">F.Sc Pre-Engineering</h4>
-                    <p className="text-textSecondary">Punjab College Jand, Attock</p>
-                    <p className="text-textSecondary text-sm">Aug. 2016 - May 2018</p>
-                  </div>
-                </div>
+            {education.map((item) => (
+              <div key={item.degree} className="py-5">
+                <dt className="eyebrow">{item.period}</dt>
+                <dd className="mt-2 font-medium">{item.degree}</dd>
+                <dd className="text-sm text-muted">
+                  {item.school} · {item.location}
+                </dd>
               </div>
-              
-              <div className="bg-tertiary p-6 rounded-lg">
-                <h3 className="text-xl font-bold text-textPrimary mb-4">Current Focus</h3>
-                <ul className="list-disc list-inside text-textSecondary space-y-2">
-                  <li>Developing mission-critical desktop applications</li>
-                  <li>Working with asynchronous programming patterns</li>
-                  <li>Implementing real-time communication systems</li>
-                  <li>Building scalable frontend solutions</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+            ))}
+          </dl>
+        </Reveal>
       </div>
-    </section>
-  );
-};
 
-export default About; 
+      <ol className="mt-20 grid gap-px overflow-hidden rounded-xl border border-line bg-line md:mt-28 md:grid-cols-3">
+        {focusAreas.map((area, i) => (
+          <li key={area.title} className="bg-paper">
+            <Reveal delay={i * 0.08} className="flex h-full flex-col p-6 sm:p-8 md:p-6 lg:p-8">
+              <span className="font-mono text-xs text-accent">0{i + 1}</span>
+              <h3 className="display mt-8 text-2xl uppercase sm:text-3xl md:text-2xl lg:text-3xl">{area.title}</h3>
+              <p className="mt-4 leading-relaxed text-muted">{area.body}</p>
+            </Reveal>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+);
+
+export default About;

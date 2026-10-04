@@ -1,77 +1,50 @@
-import { motion } from 'framer-motion';
-import { BriefcaseIcon } from '@heroicons/react/24/outline';
+import { experience } from '../data/profile';
+import Reveal from './Reveal';
+import RichText from './RichText';
+import SectionHeader from './SectionHeader';
 
-const Experience = () => {
-  const experiences = [
-    {
-      title: 'Software Engineer',
-      company: 'Pakistan Air Force',
-      duration: 'Nov. 2023 - Present',
-      responsibilities: [
-        'Collaborated with cross-functional teams to design and implement advanced features in mission-critical desktop applications using .NET WPF.',
-        'Utilized asynchronous programming, including async/await patterns and Task Parallel Library (TPL), to improve application responsiveness.',
-        'Engineered multithreaded solutions to handle high-concurrency tasks and improve application reliability.',
-        'Optimized TCP/IP, UDP communication protocols, and integrated RTP for secure real-time data transmission.',
-        'Developed dynamic 2D and 3D mapping solutions for mission-critical operations.',
-        'Designed real-time communication interfaces using serial communication and integrated with LabVIEW.',
-        'Successfully integrated LabVIEW applications with C# for real-time data acquisition.',
-        'Refactored legacy codebases into modular, object-oriented structures.',
-      ],
-    },
-  ];
+const Experience = () => (
+  <section id="experience" className="py-24 md:py-32">
+    <div className="page">
+      <SectionHeader index="02" title="Experience" kicker="Where I work" />
 
-  return (
-    <section id="experience" className="py-20 bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl font-bold text-textPrimary mb-12">
-            Professional <span className="text-secondary">Experience</span>
-          </h2>
-
-          <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="relative pl-8 md:pl-32 pb-12 border-l-2 border-secondary"
-              >
-                <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-secondary" />
-                
-                <div className="md:absolute md:left-8 md:top-0 mb-4 md:mb-0">
-                  <span className="text-secondary font-mono">{exp.duration}</span>
-                </div>
-
-                <div className="bg-tertiary p-6 rounded-lg">
-                  <div className="flex items-center mb-4">
-                    <BriefcaseIcon className="w-6 h-6 text-secondary mr-2" />
-                    <h3 className="text-xl font-bold text-textPrimary">{exp.title}</h3>
-                  </div>
-                  <p className="text-secondary font-medium mb-4">{exp.company}</p>
-                  
-                  <ul className="space-y-3">
-                    {exp.responsibilities.map((resp, idx) => (
-                      <li key={idx} className="text-textSecondary flex items-start">
-                        <span className="text-secondary mr-2">▹</span>
-                        <span>{resp}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </motion.div>
-            ))}
+      <div className="grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-10">
+        <Reveal className="md:col-span-5 lg:col-span-4">
+          <div className="md:sticky md:top-28">
+            <p className="eyebrow text-ink">{experience.period}</p>
+            <h3 className="display mt-4 text-3xl uppercase sm:text-4xl">{experience.role}</h3>
+            <p className="mt-3 text-lg">{experience.company}</p>
+            <p className="text-muted">{experience.location}</p>
+            <div className="mt-6 inline-flex items-center gap-2 rounded-full bg-accent px-3 py-1 font-mono text-xs text-accent-ink">
+              <span className="h-1.5 w-1.5 rounded-full bg-accent-ink" aria-hidden="true" />
+              Current role
+            </div>
           </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
+        </Reveal>
 
-export default Experience; 
+        <div className="md:col-span-7 lg:col-span-8">
+          {experience.groups.map((group, g) => (
+            <Reveal key={group.title} delay={0.05} className="border-t border-line py-8 first:border-t-0 first:pt-0">
+              <h4 className="flex items-baseline gap-3 font-mono text-xs uppercase tracking-[0.14em]">
+                <span className="text-accent">{String.fromCharCode(65 + g)}</span>
+                {group.title}
+              </h4>
+              <ul className="mt-5 space-y-4">
+                {group.points.map((point) => (
+                  <li key={point} className="flex gap-4 leading-relaxed text-muted">
+                    <span className="mt-[0.7em] h-px w-4 shrink-0 bg-ink/40" aria-hidden="true" />
+                    <span>
+                      <RichText text={point} />
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
+export default Experience;

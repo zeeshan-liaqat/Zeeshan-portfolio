@@ -1,81 +1,48 @@
-import { motion } from 'framer-motion';
+import { Fragment } from 'react';
+import { skills } from '../data/profile';
+import Reveal from './Reveal';
+import SectionHeader from './SectionHeader';
 
-const Skills = () => {
-  const skillCategories = [
-    {
-      title: 'Languages',
-      skills: ['Python', 'Java', 'SQL', 'JavaScript', 'HTML/CSS', 'C#'],
-    },
-    {
-      title: 'Frameworks',
-      skills: ['React', 'Node.js', 'React Native', '.NET Core'],
-    },
-    {
-      title: 'Developer Tools',
-      skills: ['Git', 'GitHub', 'VS Code', 'PyCharm', 'IntelliJ', 'Visual Studio'],
-    },
-    {
-      title: 'Technologies',
-      skills: ['RTP', 'TCP/IP', 'UDP', 'Serial Communication', '2D/3D Mapping'],
-    },
-  ];
+const Skills = () => (
+  <section id="skills" className="py-24 md:py-32">
+    <div className="page">
+      <SectionHeader index="04" title="Skills" kicker="Toolbox" />
 
-  return (
-    <section id="skills" className="py-20 bg-primary">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-        >
-          <h2 className="text-3xl font-bold text-textPrimary mb-12">
-            Technical <span className="text-secondary">Skills</span>
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {skillCategories.map((category, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-tertiary rounded-lg p-6"
-              >
-                <h3 className="text-xl font-bold text-textPrimary mb-4">
-                  {category.title}
-                </h3>
-                <div className="space-y-2">
-                  {category.skills.map((skill, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center space-x-2 text-textSecondary hover:text-secondary transition-colors duration-300"
-                    >
-                      <span className="text-secondary">▹</span>
-                      <span>{skill}</span>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            viewport={{ once: true }}
-            className="mt-12 text-center"
+      <dl>
+        {skills.map((row, i) => (
+          <Reveal
+            key={row.group}
+            delay={i * 0.04}
+            className="group grid grid-cols-1 gap-3 border-b border-line py-6 first:pt-0 md:grid-cols-12 md:gap-10 md:py-7"
           >
-            <p className="text-textSecondary max-w-2xl mx-auto">
-              I'm always eager to learn new technologies and frameworks to stay current with industry trends and best practices.
-            </p>
-          </motion.div>
-        </motion.div>
-      </div>
-    </section>
-  );
-};
+            <dt className="flex items-baseline gap-3 md:col-span-3">
+              <span className="font-mono text-xs text-muted transition-colors group-hover:text-accent">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="font-mono text-xs uppercase tracking-[0.14em]">{row.group}</span>
+            </dt>
+            <dd className="text-lg leading-snug sm:text-2xl md:col-span-9">
+              {row.items.map((item, j) => (
+                <Fragment key={item}>
+                  <span className="sm:whitespace-nowrap">
+                    {item}
+                    {j < row.items.length - 1 && (
+                      <>
+                        <span className="sr-only">,</span>
+                        <span className="pl-2 text-accent" aria-hidden="true">
+                          /
+                        </span>
+                      </>
+                    )}
+                  </span>{' '}
+                </Fragment>
+              ))}
+            </dd>
+          </Reveal>
+        ))}
+      </dl>
+    </div>
+  </section>
+);
 
-export default Skills; 
+export default Skills;

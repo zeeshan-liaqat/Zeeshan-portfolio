@@ -1,87 +1,136 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
+  /* Colour tokens as RGB channels so Tailwind opacity modifiers work. */
   :root {
+    color-scheme: light;
+    --paper: 243 241 236;
+    --surface: 255 255 255;
+    --ink: 17 17 19;
+    --muted: 88 88 96;
+    --line: 214 210 201;
+    --accent: 255 90 31;
+    --accent-ink: 17 17 19;
+    --code: 17 17 19;
+  }
+
+  :root.dark {
     color-scheme: dark;
+    --paper: 14 14 16;
+    --surface: 23 23 26;
+    --ink: 237 235 230;
+    --muted: 160 160 168;
+    --line: 46 46 52;
+    --accent: 255 106 51;
+    --accent-ink: 14 14 16;
+    --code: 24 24 28;
   }
 
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    @apply bg-primary text-textPrimary font-sans;
+    @apply bg-paper text-ink font-sans antialiased;
     margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+
+  section[id] {
+    scroll-margin-top: 4.5rem;
+  }
+
+  ::selection {
+    @apply bg-accent text-accent-ink;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
 @layer components {
-  .nav-link {
-    @apply text-textSecondary hover:text-secondary px-3 py-2 rounded-md text-sm font-medium cursor-pointer transition-colors;
+  .page {
+    @apply mx-auto w-full max-w-page px-4 sm:px-6 lg:px-10;
   }
 
-  .section-heading {
-    @apply text-3xl font-bold text-textPrimary mb-8;
+  /* Wide, heavy display face for the big typographic headings. */
+  .display {
+    font-family: Archivo, system-ui, sans-serif;
+    font-stretch: 125%;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 0.86;
   }
 
-  .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+  .eyebrow {
+    @apply font-mono text-[0.72rem] uppercase tracking-[0.14em] text-muted;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full border border-line px-3 py-1 font-mono text-xs text-ink/80;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-ink text-paper hover:bg-accent hover:text-accent-ink;
+  }
+
+  .btn-ghost {
+    @apply btn border border-ink/20 text-ink hover:border-ink;
+  }
+
+  .link-line {
+    background-image: linear-gradient(rgb(var(--accent)), rgb(var(--accent)));
+    background-size: 0% 2px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 250ms ease;
+  }
+
+  .link-line:hover,
+  .link-line:focus-visible {
+    background-size: 100% 2px;
+  }
+
+  /* Faint engineering grid behind the hero. */
+  .blueprint {
+    background-image:
+      linear-gradient(rgb(var(--ink) / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(var(--ink) / 0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 70% 30%, black 20%, transparent 75%);
+  }
+
+  /* Syntax colours for the code card (always on a dark surface). */
+  .tok-kw { color: #ff8f66; }
+  .tok-type { color: #7fd6c8; }
+  .tok-str { color: #c7e59b; }
+  .tok-num { color: #f7c86a; }
+  .tok-fn { color: #8fb4ff; }
+  .tok-com { color: #6f6f7a; font-style: italic; }
+  .tok-p { color: #b9b7b1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-primary;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-tertiary rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-secondary;
-}
-
-/* Selection color */
-::selection {
-  @apply bg-secondary/30 text-textPrimary;
-}
-
-/* Focus outline */
-*:focus {
-  outline: 2px solid theme('colors.secondary');
-  outline-offset: 2px;
-}
-
-/* Smooth transitions */
-.transition-all {
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* Animation classes */
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-} 
